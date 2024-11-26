@@ -8,20 +8,16 @@ contract Eltoken is ERC20, Ownable {
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
-    function mint(address to, uint256 amount) external onlyOwner {
-        require(to != address(0), "Mint to the zero address");
+    function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
 
-    function burn(uint256 amount) external {
-        require(amount <= 10, "Burn amount exceeds the limit of 10");
-        require(amount <= balanceOf(msg.sender), "Insufficient balance to burn");
+    function burn(uint256 amount) public {
+        require(amount <= 10, "Burn amount exceeds limit of 10");
         _burn(msg.sender, amount);
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
-        require(to != address(0), "Transfer to the zero address");
-        require(amount <= balanceOf(msg.sender), "Insufficient balance");
         _transfer(msg.sender, to, amount);
         return true;
     }
